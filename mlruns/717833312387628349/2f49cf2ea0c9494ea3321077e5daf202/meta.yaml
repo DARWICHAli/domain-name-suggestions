@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/717833312387628349/2f49cf2ea0c9494ea3321077e5daf202/artifacts
+end_time: 1755116328045
+entry_point_name: ''
+experiment_id: '717833312387628349'
+lifecycle_stage: active
+run_id: 2f49cf2ea0c9494ea3321077e5daf202
+run_name: puzzled-bee-27
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755116324158
+status: 3
+tags: []
+user_id: ali

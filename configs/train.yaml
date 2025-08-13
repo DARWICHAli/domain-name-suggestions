@@ -1,0 +1,19 @@
+model_name: meta-llama/Meta-Llama-3-8B-Instruct
+output_dir: artifacts/model_v0
+logging_dir: artifacts/logs
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+training:
+  learning_rate: 2e-5
+  batch_size: 4
+  gradient_accumulation_steps: 4
+  num_train_epochs: 3
+  seed: 42
+  bf16: true
+  gradient_checkpointing: true
+data:
+  train_file: data/processed/train.jsonl
+  val_file: data/processed/valid.jsonl
+ 

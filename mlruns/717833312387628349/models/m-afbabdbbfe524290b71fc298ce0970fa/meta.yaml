@@ -1,0 +1,10 @@
+artifact_location: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/717833312387628349/models/m-afbabdbbfe524290b71fc298ce0970fa/artifacts
+creation_timestamp: 1755116324337
+experiment_id: '717833312387628349'
+last_updated_timestamp: 1755116328041
+model_id: m-afbabdbbfe524290b71fc298ce0970fa
+model_type: null
+name: random_forest_model
+source_run_id: 2f49cf2ea0c9494ea3321077e5daf202
+status: 2
+status_message: null

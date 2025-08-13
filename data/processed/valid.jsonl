@@ -1,0 +1,20 @@
+{"input": "gambling", "output": "", "meta": {"blocked": true}}
+{"input": "fintech app in Tokyo", "output": "vvitp.com\nrsctfivzhn.io\ncxmvtkgfdw.fr", "meta": {"tld_prefs": [".com", ".io", ".fr"], "style": "minimal"}}
+{"input": "coffee shop in Tokyo", "output": "vpulrydmnb.com\nvmnxepsd.io", "meta": {"tld_prefs": [".com", ".io"], "style": "brandable"}}
+{"input": "health clinic in Tokyo", "output": "xthzzldks.fr\nnvoitoffsr.io", "meta": {"tld_prefs": [".fr", ".io"], "style": "minimal"}}
+{"input": "coffee shop in Tokyo", "output": "morktvhwv.com\ncjbbguzrd.io\nrhtav.fr", "meta": {"tld_prefs": [".com", ".io", ".fr"], "style": "minimal"}}
+{"input": "health clinic in Paris", "output": "hrykyzioag.fr\nwwlfqsjpt.io\nuzhere.com", "meta": {"tld_prefs": [".fr", ".io", ".com"], "style": "descriptive"}}
+{"input": "health clinic in Paris", "output": "gevamybyp.com\nqrmojuifeb.io", "meta": {"tld_prefs": [".com", ".io"], "style": "minimal"}}
+{"input": "NGO in Tokyo", "output": "rihyqm.io\nvzarlxpqy.com\nxjucgsanun.fr", "meta": {"tld_prefs": [".io", ".com", ".fr"], "style": "brandable"}}
+{"input": "NGO in Paris", "output": "cczunqfqf.fr\nlcnszuqytd.com", "meta": {"tld_prefs": [".fr", ".com"], "style": "minimal"}}
+{"input": "fintech app in Paris", "output": "uoofgk.com", "meta": {"tld_prefs": [".com"], "style": "brandable"}}
+{"input": "NGO in NY", "output": "nqqtp.io", "meta": {"tld_prefs": [".io"], "style": "descriptive"}}
+{"input": "SaaS in NY", "output": "hyjva.com\nndkuoy.io\nhxzwqy.fr", "meta": {"tld_prefs": [".com", ".io", ".fr"], "style": "descriptive"}}
+{"input": "gambling", "output": "", "meta": {"blocked": true}}
+{"input": "SaaS in Paris", "output": "txikqn.fr\neqgcro.io\nwyzlo.com", "meta": {"tld_prefs": [".fr", ".io", ".com"], "style": "minimal"}}
+{"input": "SaaS in NY", "output": "midrcqxil.com", "meta": {"tld_prefs": [".com"], "style": "descriptive"}}
+{"input": "fintech app in Tokyo", "output": "agftlv.com\nrimlum.io\nepvwd.fr", "meta": {"tld_prefs": [".com", ".io", ".fr"], "style": "minimal"}}
+{"input": "fintech app in Tokyo", "output": "apkpxoozmu.com\nkxpwdnc.fr\nnrwupen.io", "meta": {"tld_prefs": [".com", ".fr", ".io"], "style": "descriptive"}}
+{"input": "coffee shop in Tokyo", "output": "fmbjb.fr\nnukxwb.com\nisnvvgoeqj.io", "meta": {"tld_prefs": [".fr", ".com", ".io"], "style": "minimal"}}
+{"input": "SaaS in Tokyo", "output": "jwmmpnde.io\nnhdep.com", "meta": {"tld_prefs": [".io", ".com"], "style": "descriptive"}}
+{"input": "coffee shop in NY", "output": "mfevaboeqb.fr\ndexnkzqws.com", "meta": {"tld_prefs": [".fr", ".com"], "style": "minimal"}}
