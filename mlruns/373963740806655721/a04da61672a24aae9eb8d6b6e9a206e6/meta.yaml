@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/373963740806655721/a04da61672a24aae9eb8d6b6e9a206e6/artifacts
+end_time: 1755184644873
+entry_point_name: ''
+experiment_id: '373963740806655721'
+lifecycle_stage: active
+run_id: a04da61672a24aae9eb8d6b6e9a206e6
+run_name: funny-robin-765
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755182812646
+status: 3
+tags: []
+user_id: root
