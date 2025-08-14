@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import Dict, List
 from pathlib import Path
 
+import mlflow
+from transformers.integrations import MLflowCallback
 import torch
 from datasets import Dataset
 from transformers import (AutoTokenizer, AutoModelForCausalLM,
@@ -24,6 +26,10 @@ def load_jsonl(path):
             if line.strip():
                 rows.append(json.loads(line))
     return rows
+
+
+
+
 
 def build_dataset(jsonl_path: str):
     data = load_jsonl(jsonl_path)
@@ -57,6 +63,8 @@ def main():
     train_ds = build_dataset(cfg["data"]["train_file"])
     val_file = cfg["data"].get("val_file")
     eval_ds  = build_dataset(val_file) if val_file else None
+    
+    print("Tokenizing datasets...")
 
     # Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
@@ -64,17 +72,21 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     # 4-bit loading (QLoRA-friendly)
-    bnb_cfg = BitsAndBytesConfig(load_in_4bit=True,
-                                 bnb_4bit_use_double_quant=True,
-                                 bnb_4bit_quant_type="nf4",
-                                 bnb_4bit_compute_dtype=torch.bfloat16)
+    # bnb_cfg = BitsAndBytesConfig(load_in_4bit=True,
+    #                              bnb_4bit_use_double_quant=True,
+    #                              bnb_4bit_quant_type="nf4",
+    #                              bnb_4bit_compute_dtype=torch.float32)
+    print("Loading model...")
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        quantization_config=bnb_cfg,
-        device_map="auto",
-        trust_remote_code=True
+        #quantization_config=bnb_cfg,
+        device_map="cpu", # cant use GPU on my machine
+        torch_dtype=torch.float16,     # safest on CPU
+        trust_remote_code=True,
+        low_cpu_mem_usage=True
     )
+    print("Configuring model for LoRA...")
 
     # LoRA
     lora = cfg.get("lora", {})
@@ -91,34 +103,78 @@ def main():
     args_tr = TrainingArguments(
         output_dir=out_dir,
         logging_dir=logging_dir,
-        learning_rate=tr.get("learning_rate", 2e-5),
-        per_device_train_batch_size=tr.get("batch_size", 4),
-        gradient_accumulation_steps=tr.get("gradient_accumulation_steps", 4),
-        num_train_epochs=tr.get("num_train_epochs", 3),
-        bf16=tr.get("bf16", True),
-        gradient_checkpointing=tr.get("gradient_checkpointing", True),
+        learning_rate=float(tr.get("learning_rate", 2e-5)),
+        per_device_train_batch_size=int(tr.get("batch_size", 1)),  # reduce for memory
+        gradient_accumulation_steps=int(tr.get("gradient_accumulation_steps", 4)),
+        num_train_epochs=int(tr.get("num_train_epochs", 3)),
+        gradient_checkpointing=bool(tr.get("gradient_checkpointing", True)),
         save_strategy="epoch",
-        evaluation_strategy="epoch" if eval_ds is not None else "no",
+        logging_strategy="steps",
         logging_steps=25,
-        report_to=["none"],
-        seed=tr.get("seed", 42)
+        report_to=["mlflow"],             # Enable MLflow logging
+        disable_tqdm=False,               # Ensure tqdm progress bar is shown
+        seed=int(tr.get("seed", 42))
     )
 
+
+    # trainer = SFTTrainer(
+    #     model=model,
+    #     tokenizer=tokenizer,
+    #     args=args_tr,
+    #     peft_config=peft_cfg,
+    #     train_dataset=train_ds,
+    #     eval_dataset=eval_ds,
+    #     dataset_text_field="text",
+    #     packing=False,
+    #     max_seq_length=tokenizer.model_max_length
+    # )
+
+    mlflow.set_experiment("domain_name_suggestions")
+    mlflow.start_run()
+
+
+    def tokenize_fn(examples):
+        return tokenizer(
+            examples["text"],
+            truncation=True,
+            padding="max_length",
+            max_length=tokenizer.model_max_length
+        )
+
+    train_ds = train_ds.map(tokenize_fn, batched=True)
+    if eval_ds:
+        eval_ds = eval_ds.map(tokenize_fn, batched=True)
+
+    
     trainer = SFTTrainer(
-        model=model,
-        tokenizer=tokenizer,
-        args=args_tr,
-        peft_config=peft_cfg,
-        train_dataset=train_ds,
-        eval_dataset=eval_ds,
-        dataset_text_field="text",
-        packing=False,
-        max_seq_length=tokenizer.model_max_length
-    )
-
+    model=model,
+    args=args_tr,
+    peft_config=peft_cfg,
+    train_dataset=train_ds,
+    eval_dataset=eval_ds,
+    #dataset_text_field="text",
+    #packing=False,
+    #max_seq_length=tokenizer.model_max_length
+)
+    
+    print("Starting training...")
     trainer.train()
+
     trainer.save_model(out_dir)
     tokenizer.save_pretrained(out_dir)
+    
+    # Log model to MLflow
+    mlflow.pytorch.log_model(
+        pytorch_model=model,
+        artifact_path="model",
+        registered_model_name="domain-name-suggester"
+    )
+
+    # Optionally log the config file
+    mlflow.log_artifact(args.config)
+
+    # End the MLflow run
+    mlflow.end_run()
     print(f"Saved to: {out_dir}")
 
 if __name__ == "__main__":
