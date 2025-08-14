@@ -7,4 +7,4 @@
 {"input": "Artificial intelligence consultancy for healthcare providers", "output": "", "meta": {}}
 {"input": "Mobile app to learn Japanese vocabulary quickly", "output": "", "meta": {}}
 {"input": "Blockchain service for supply chain transparency", "output": "", "meta": {}}
-{"input": "adult content website targeting European users", "output": "", "meta": {"blocked": True}}
+{"input": "adult content website targeting European users", "output": "", "meta": {"blocked": true}}

@@ -7,13 +7,31 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer
 
 # ---------- I/O ----------
+# def load_jsonl(path):
+#     rows=[]
+#     with open(path, "r", encoding="utf-8") as f:
+#         for line in f:
+#             if line.strip():
+#                 rows.append(json.loads(line))
+#     return rows
 def load_jsonl(path):
-    rows=[]
+    import json
+    rows = []
     with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            if line.strip():
+        for i, line in enumerate(f, 1):
+            line = line.strip()
+            if not line:
+                continue
+            try:
                 rows.append(json.loads(line))
+            except json.JSONDecodeError as e:
+                print(f"Erreur JSON à la ligne {i}: {e}")
     return rows
+
+
+
+
+
 
 def save_json(path, obj):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
