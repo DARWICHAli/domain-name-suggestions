@@ -3,8 +3,11 @@ import os, json, yaml, math
 from dataclasses import dataclass
 from typing import Dict, List
 from pathlib import Path
+import pandas as pd
 
 import mlflow
+from mlflow.models.signature import infer_signature
+
 from transformers.integrations import MLflowCallback
 import torch
 from datasets import Dataset
@@ -72,17 +75,17 @@ def main():
         tokenizer.pad_token = tokenizer.eos_token
 
     # 4-bit loading (QLoRA-friendly)
-    # bnb_cfg = BitsAndBytesConfig(load_in_4bit=True,
-    #                              bnb_4bit_use_double_quant=True,
-    #                              bnb_4bit_quant_type="nf4",
-    #                              bnb_4bit_compute_dtype=torch.float32)
+    bnb_cfg = BitsAndBytesConfig(load_in_4bit=True,
+                                 bnb_4bit_use_double_quant=True,
+                                 bnb_4bit_quant_type="nf4",
+                                 bnb_4bit_compute_dtype=torch.bfloat16)
     print("Loading model...")
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
-        #quantization_config=bnb_cfg,
-        device_map="cpu", # cant use GPU on my machine
-        torch_dtype=torch.float16,     # safest on CPU
+        quantization_config=bnb_cfg,
+        device_map="auto", # cant use GPU on my machine
+        #torch_dtype=torch.float16,     # safest on CPU
         trust_remote_code=True,
         low_cpu_mem_usage=True
     )
@@ -163,11 +166,20 @@ def main():
     trainer.save_model(out_dir)
     tokenizer.save_pretrained(out_dir)
     
-    # Log model to MLflow
+
+    # Create a small input example (tokenized)
+    input_example = pd.DataFrame([train_ds[0]["input_ids"]])
+
+    # Infer signature from input example and model output
+    signature = infer_signature(input_example, model(input_example.to(torch.long)).logits.detach().numpy())
+
+    # Log model with signature and input example
     mlflow.pytorch.log_model(
         pytorch_model=model,
         artifact_path="model",
-        registered_model_name="domain-name-suggester"
+        registered_model_name="domain-name-suggester",
+        signature=signature,
+        input_example=input_example
     )
 
     # Optionally log the config file
