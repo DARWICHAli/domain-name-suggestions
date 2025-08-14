@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/373963740806655721/b7e20951cc6c4f669dbea9575b80d581/artifacts
+end_time: 1755205857527
+entry_point_name: ''
+experiment_id: '373963740806655721'
+lifecycle_stage: active
+run_id: b7e20951cc6c4f669dbea9575b80d581
+run_name: amusing-foal-667
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755203490361
+status: 3
+tags: []
+user_id: root
