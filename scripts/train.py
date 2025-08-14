@@ -168,10 +168,14 @@ def main():
     
 
     # Create a small input example (tokenized)
-    input_example = pd.DataFrame([train_ds[0]["input_ids"]])
+    #input_example = pd.DataFrame([train_ds[0]["input_ids"]])
+    input_tensor = torch.tensor([train_ds[0]["input_ids"]], dtype=torch.long)
+
+    # Model output
+    output = model(input_tensor).logits.detach().numpy()
 
     # Infer signature from input example and model output
-    signature = infer_signature(input_example, model(input_example.to(torch.long)).logits.detach().numpy())
+    signature = infer_signature(input_tensor.numpy(), output)
 
     # Log model with signature and input example
     mlflow.pytorch.log_model(
