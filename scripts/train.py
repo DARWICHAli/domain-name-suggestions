@@ -169,17 +169,18 @@ def main():
 
     # Create a small input example (tokenized)
     #input_example = pd.DataFrame([train_ds[0]["input_ids"]])
-    device = next(model.parameters()).device   # récupère le device du modèle
-    input_tensor = torch.tensor([train_ds[0]["input_ids"]], dtype=torch.long).to(device)
+    device = torch.device("cpu")
+    short_input_ids = train_ds[0]["input_ids"][:10]
+    input_tensor = torch.tensor([short_input_ids], dtype=torch.long).to(device)
 
     # Model output
     #output = model(input_tensor).logits.detach().numpy()
     # Inférence sans gradient
     with torch.no_grad():
-        output = model(input_tensor).logits.detach().cpu().numpy()
+        output = model.to(device)(input_tensor).logits.detach().numpy()
 
     # Infer signature from input example and model output
-    signature = infer_signature(input_tensor.cpu().numpy(), output)
+    signature = infer_signature(input_tensor.numpy(), output)
 
     # Log model with signature and input example
     mlflow.pytorch.log_model(
