@@ -169,10 +169,13 @@ def main():
 
     # Create a small input example (tokenized)
     #input_example = pd.DataFrame([train_ds[0]["input_ids"]])
+    device = next(model.parameters()).device   # récupère le device du modèle
     input_tensor = torch.tensor([train_ds[0]["input_ids"]], dtype=torch.long)
+    input_tensor = input_tensor.to(device)     # déplace l'input sur le même device
 
     # Model output
-    output = model(input_tensor).logits.detach().numpy()
+    #output = model(input_tensor).logits.detach().numpy()
+    output = model(input_tensor).logits.detach().cpu().numpy()  # .cpu() pour numpy
 
     # Infer signature from input example and model output
     signature = infer_signature(input_tensor.numpy(), output)
