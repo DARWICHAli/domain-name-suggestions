@@ -1,8 +1,9 @@
 artifact_uri: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/373963740806655721/9ce24e840cc343c5a5deeb877781088e/artifacts
+deleted_time: 1755267446798
 end_time: null
 entry_point_name: ''
 experiment_id: '373963740806655721'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 9ce24e840cc343c5a5deeb877781088e
 run_name: smiling-goat-191
 source_name: ''
