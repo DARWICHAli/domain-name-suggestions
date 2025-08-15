@@ -6,8 +6,9 @@ data:
 	python scripts/synthesize.py --config configs/data.yaml
 
 prep:
-	python scripts/prepare_sft.py --input data/processed/train.jsonl
-
+	python scripts/prepare_sft.py \
+		--input data/processed/train.jsonl \
+		--output data/processed/train_sft.jsonl
 train:
 	python scripts/train.py --config configs/train.yaml
 
