@@ -1,5 +1,5 @@
-model_path: artifacts/model_v1
+model_path: artifacts/model_v2
 eval_file: data/eval/holdout.jsonl
 judge_model: gpt-4
 judge_prompt: configs/judge_prompt.txt
-output_file: artifacts/eval_v1.json
+output_file: artifacts/eval_v2.json

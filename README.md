@@ -48,13 +48,6 @@ pip install -r requirements.txt
                                │
                                ▼
                 ┌─────────────────────────────────────┐
-                │  Préparation SFT                    │
-                │  scripts/prepare_sft.py  (make prep)│
-                │  ➜ train_sft.jsonl                  │
-                └─────────────────────────────────────┘
-                               │
-                               ▼
-                ┌─────────────────────────────────────┐
                 │  Entraînement LoRA/QLoRA            │
                 │  scripts/train.py  (make train)     │
                 │  ➜ artifacts/model_vX/              │
@@ -100,15 +93,7 @@ make data
 
 ---
 
-### 2. Préparer le dataset SFT
-```bash
-make prep
-```
-- **scripts/prepare_sft.py** : formate les données pour l’entraînement LoRA.
-
----
-
-### 3. (Optionnel) Créer le holdout
+### 2. (Optionnel) Créer le holdout
 Deux options :
 - **Par script** :
 ```bash
@@ -118,7 +103,7 @@ make holdout
 
 ---
 
-### 4. (Optionnel) Générer les edge cases
+### 3. (Optionnel) Générer les edge cases
 ```bash
 make edges
 ```
@@ -126,7 +111,7 @@ make edges
 
 ---
 
-### 5. Entraîner le modèle LoRA/QLoRA
+### 4. Entraîner le modèle LoRA/QLoRA
 ```bash
 make train
 ```
@@ -135,7 +120,7 @@ make train
 
 ---
 
-### 6. Évaluer le modèle
+### 5. Évaluer le modèle
 ```bash
 make eval
 ```
@@ -144,7 +129,7 @@ make eval
 
 ---
 
-### 7. Tester la sécurité
+### 6. Tester la sécurité
 ```bash
 make test
 ```
@@ -152,7 +137,7 @@ make test
 
 ---
 
-### 8. Lancer l’API
+### 7. Lancer l’API
 ```bash
 make api
 ```
