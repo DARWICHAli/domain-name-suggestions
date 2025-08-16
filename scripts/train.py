@@ -195,18 +195,15 @@ def main():
     #output = model(input_tensor).logits.detach().numpy()
     # Inférence sans gradient
     with torch.no_grad():
-        if device.type == "cuda":
-            # On GPU, use bf16 autocast for QLoRA 4-bit
-            with torch.amp.autocast("cuda", dtype=torch.bfloat16):
-                output = model(input_tensor).logits.detach().cpu().numpy()
-        else:
-            # On CPU, fallback
-            with torch.amp.autocast("cuda", dtype=torch.bfloat16):
-                output = model(input_tensor).logits.detach().numpy()
+        # Use autocast with the correct device and dtype
+        dtype = torch.bfloat16 if device.type == "cuda" else torch.float32
+        with torch.amp.autocast(device.type, dtype=dtype):
+            output_tensor = model(input_tensor).logits
+    output = output_tensor.detach().cpu().numpy()
 
 
     # Infer signature from input example and model output
-    signature = infer_signature(input_tensor.numpy(), output)
+    signature = infer_signature(input_tensor.cpu().numpy(), output)
 
     # Log model with signature and input example
     mlflow.pytorch.log_model(
