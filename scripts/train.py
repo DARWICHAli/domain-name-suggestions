@@ -189,7 +189,7 @@ def main():
 
     short_input_ids = train_ds[0]["input_ids"][:10]
     input_tensor = torch.tensor([short_input_ids], dtype=torch.long).to(device)
-    input_example = pd.DataFrame(input_tensor.numpy())
+    input_example = pd.DataFrame(input_tensor.cpu().numpy())
 
     # Model output
     #output = model(input_tensor).logits.detach().numpy()
