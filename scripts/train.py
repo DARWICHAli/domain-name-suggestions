@@ -74,11 +74,25 @@ def main():
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    # 4-bit loading (QLoRA-friendly)
-    bnb_cfg = BitsAndBytesConfig(load_in_4bit=True,
-                                 bnb_4bit_use_double_quant=True,
-                                 bnb_4bit_quant_type="nf4",
-                                 bnb_4bit_compute_dtype=torch.bfloat16)
+
+    # 4-bit QLoRA configuration
+    if cfg["training"].get("qlora", False):
+        print("Setting up QLoRA 4-bit configuration...")
+        bnb_cfg = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16
+        )
+    else:
+        bnb_cfg = None
+
+
+    # # 4-bit loading (QLoRA-friendly)
+    # bnb_cfg = BitsAndBytesConfig(load_in_4bit=True,
+    #                              bnb_4bit_use_double_quant=True,
+    #                              bnb_4bit_quant_type="nf4",
+    #                              bnb_4bit_compute_dtype=torch.bfloat16)
     print("Loading model...")
 
     model = AutoModelForCausalLM.from_pretrained(
@@ -111,6 +125,7 @@ def main():
         gradient_accumulation_steps=int(tr.get("gradient_accumulation_steps", 4)),
         num_train_epochs=int(tr.get("num_train_epochs", 3)),
         gradient_checkpointing=bool(tr.get("gradient_checkpointing", True)),
+        bf16=cfg["training"]["bf16"],
         save_strategy="epoch",
         logging_strategy="steps",
         logging_steps=25,
