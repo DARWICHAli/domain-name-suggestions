@@ -184,7 +184,9 @@ def main():
 
     # Create a small input example (tokenized)
     #input_example = pd.DataFrame([train_ds[0]["input_ids"]])
-    device = torch.device("cpu")
+    #device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     short_input_ids = train_ds[0]["input_ids"][:10]
     input_tensor = torch.tensor([short_input_ids], dtype=torch.long).to(device)
     input_example = pd.DataFrame(input_tensor.numpy())
@@ -193,7 +195,15 @@ def main():
     #output = model(input_tensor).logits.detach().numpy()
     # Inférence sans gradient
     with torch.no_grad():
-        output = model.to(device)(input_tensor).logits.detach().numpy()
+        if device.type == "cuda":
+            # On GPU, use bf16 autocast for QLoRA 4-bit
+            with torch.amp.autocast("cuda", dtype=torch.bfloat16):
+                output = model(input_tensor).logits.detach().cpu().numpy()
+        else:
+            # On CPU, fallback
+            with torch.amp.autocast("cuda", dtype=torch.bfloat16):
+                output = model(input_tensor).logits.detach().numpy()
+
 
     # Infer signature from input example and model output
     signature = infer_signature(input_tensor.numpy(), output)
