@@ -199,7 +199,7 @@ def main():
         dtype = torch.bfloat16 if device.type == "cuda" else torch.float32
         with torch.amp.autocast(device.type, dtype=dtype):
             output_tensor = model(input_tensor).logits
-    output = output_tensor.detach().cpu().numpy()
+    output = output_tensor.detach().to(torch.float32).cpu().numpy()
 
 
     # Infer signature from input example and model output
