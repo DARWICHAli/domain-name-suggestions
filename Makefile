@@ -1,14 +1,10 @@
-.PHONY: all data prep train eval edges report api
+.PHONY: all data train eval edges report api test
 
-all: data prep train eval
+all: data train eval
 
 data:
-	python scripts/synthesize.py --config configs/data.yaml
+	python scripts/synthesize.py
 
-prep:
-	python scripts/prepare_sft.py \
-		--input data/processed/train.jsonl \
-		--output data/processed/train_sft.jsonl
 train:
 	python scripts/train.py --config configs/train.yaml
 
