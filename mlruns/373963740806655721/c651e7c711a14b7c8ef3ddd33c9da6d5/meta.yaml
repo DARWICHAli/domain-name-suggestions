@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/373963740806655721/c651e7c711a14b7c8ef3ddd33c9da6d5/artifacts
+end_time: 1755440083592
+entry_point_name: ''
+experiment_id: '373963740806655721'
+lifecycle_stage: active
+run_id: c651e7c711a14b7c8ef3ddd33c9da6d5
+run_name: melodic-moose-688
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755438627788
+status: 3
+tags: []
+user_id: root
