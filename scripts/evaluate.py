@@ -56,7 +56,7 @@ def load_model(model_path: str):
     tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
-        
+
     # model = AutoModelForCausalLM.from_pretrained(
     #     model_path,
     #     torch_dtype=torch.float16,        # float16 plus sûr que bfloat16 sur Kaggle
@@ -68,14 +68,10 @@ def load_model(model_path: str):
 
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
-        device_map="auto",
-        torch_dtype=torch.float16,
-        trust_remote_code=True
-    ).eval()
-
-    model.tie_weights() 
-
-
+        torch_dtype=torch.float16,        # float16 plus sûr que bfloat16 sur Kaggle
+        device_map=None,                  # charge tout sur un seul device
+    )
+    model = model.to("cuda" if torch.cuda.is_available() else "cpu")
 
     return tokenizer, model
 
