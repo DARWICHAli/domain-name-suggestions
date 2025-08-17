@@ -1,0 +1,14 @@
+artifact_uri: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/373963740806655721/4ee4b7f71dbb42c0964bd6634401c4fe/artifacts
+end_time: 1755462536583
+entry_point_name: ''
+experiment_id: '373963740806655721'
+lifecycle_stage: active
+run_id: 4ee4b7f71dbb42c0964bd6634401c4fe
+run_name: tasteful-lark-899
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755445009101
+status: 3
+tags: []
+user_id: root
