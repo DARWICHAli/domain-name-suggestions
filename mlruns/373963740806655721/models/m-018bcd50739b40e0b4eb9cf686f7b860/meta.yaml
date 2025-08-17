@@ -1,0 +1,10 @@
+artifact_location: file:///home/ali/Documents/projects/domain-name-suggestions/mlruns/373963740806655721/models/m-018bcd50739b40e0b4eb9cf686f7b860/artifacts
+creation_timestamp: 1755437594689
+experiment_id: '373963740806655721'
+last_updated_timestamp: 1755437630249
+model_id: m-018bcd50739b40e0b4eb9cf686f7b860
+model_type: null
+name: model
+source_run_id: 160f42003a6546dfab2f302f4621d5c9
+status: 2
+status_message: null
