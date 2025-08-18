@@ -174,4 +174,4 @@ Après entraînement :
 ---
 
 ## 👤 Auteur
-Projet réalisé par Ali DARWICH dans le cadre du **AI Engineer Homework**.
+Projet réalisé par Ali DARWICH
